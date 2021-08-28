@@ -64,6 +64,7 @@ namespace zxemu
             pal.Entries[13] = Color.FromArgb(0, BRIGHT, BRIGHT);
             pal.Entries[14] = Color.FromArgb(BRIGHT, BRIGHT, 0);
             pal.Entries[15] = Color.FromArgb(BRIGHT, BRIGHT, BRIGHT);
+            screen.Palette = pal;
             pb_screen.BackgroundImage = screen;
 
             AudioIn();
