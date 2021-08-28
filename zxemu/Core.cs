@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 
 using Konamiman.Z80dotNet;
-using NAudio.Wave;
+//using NAudio.Wave;
 
 namespace zxemu
 {
@@ -30,15 +30,17 @@ namespace zxemu
         //private readonly byte[] ram;
         //private bool cpuIrq;
 
-        private readonly WaveIn sampler;
+        //private readonly WaveIn sampler;
 
         public Core(PictureBox pb)
         {
+            /*
             sampler = new WaveIn()
             {
                 WaveFormat = new WaveFormat(baseFreq, 8, 1)
             };
             sampler.DataAvailable += Sampler_DataAvailable1;
+            */
 
             speed = (float)clockFreq / (float)baseFreq;
             lineFreq = (312f * 50f) / baseFreq;

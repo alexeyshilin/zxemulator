@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-using NAudio.Wave;
+//using NAudio.Wave;
 using Konamiman.Z80dotNet;
 
 namespace zxemu
@@ -42,6 +42,7 @@ namespace zxemu
             Task.Run(DataRun);
         }
 
+        /*
         private void Sampler_DataAvailable1(object sender, WaveInEventArgs e)
         {
             //throw new NotImplementedException();
@@ -70,6 +71,7 @@ namespace zxemu
                 }
             }
         }
+        */
 
         private void DataRun()
         {

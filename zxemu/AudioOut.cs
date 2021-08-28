@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using NAudio.Wave;
+//using NAudio.Wave;
 
 namespace zxemu
 {
+    /*
     public partial class Core : WaveStream
     {
         private readonly WaveFormat waveFormat = new WaveFormat(96000, 8, 1);
@@ -22,4 +23,5 @@ namespace zxemu
             throw new NotImplementedException();
         }
     }
+    */
 }
