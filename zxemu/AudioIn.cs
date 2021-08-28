@@ -75,7 +75,7 @@ namespace zxemu
         {
             //throw new NotImplementedException();
 
-            for (int i = 0; i < 96000; i++)
+            while(true)
             {
                 float tCount = lastTCount;
 
@@ -98,8 +98,6 @@ namespace zxemu
                     lastLine--;
                 }
             }
-
-            Task.Run(DataRun);
         }
 
         private void DrawLine(int line)
