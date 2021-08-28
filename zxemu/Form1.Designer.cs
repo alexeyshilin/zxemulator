@@ -35,6 +35,7 @@ namespace zxemu
             // 
             // pb
             // 
+            this.pb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pb.Location = new System.Drawing.Point(12, 12);
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(832, 624);
