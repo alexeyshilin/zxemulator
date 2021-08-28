@@ -78,7 +78,7 @@ namespace zxemu
 
             int lineStart = line * 416;
 
-            if(line<64 ||line>256 )
+            if(line<64 || line>=256)
             {
                 Fill(screenData, borderColor, lineStart, 416);
                 return;
@@ -96,6 +96,7 @@ namespace zxemu
             {
                 byte att = ram[charX + charY];
                 int ink = att & 0x07;
+                //ink = 0x01; // red
                 int paper = (att & 0x38) >> 3;
                 if((att&0x40)!=0) { ink += 8; paper += 8; }
                 bool flash = (att & 0x80) != 0;
