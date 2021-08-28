@@ -38,7 +38,8 @@ namespace zxemu
 
             Array.Copy(File.ReadAllBytes("48k.rom"), ram, 16384);
             //sampler.StartRecording();
-            Task.Run(sampler.StartRecording);
+            //Task.Run(sampler.StartRecording);
+            Task.Run(DataRun);
         }
 
         private void Sampler_DataAvailable1(object sender, WaveInEventArgs e)
@@ -68,6 +69,37 @@ namespace zxemu
                     lastLine--;
                 }
             }
+        }
+
+        private void DataRun()
+        {
+            //throw new NotImplementedException();
+
+            for (int i = 0; i < 96000; i++)
+            {
+                float tCount = lastTCount;
+
+                while (tCount < speed)
+                    tCount += cpu.ExecuteNextInstruction();
+
+                lastTCount = tCount - speed;
+                lastLine += lineFreq;
+
+                if (lastLine >= 1)
+                {
+                    DrawLine(lineCount++);
+
+                    if (lineCount >= 312)
+                    {
+                        lineCount = 0;
+                        FireInterrupt();
+                    }
+
+                    lastLine--;
+                }
+            }
+
+            Task.Run(DataRun);
         }
 
         private void DrawLine(int line)
