@@ -11,8 +11,8 @@ namespace zxemu
 {
     public class PortSpace : IMemory
     {
-        private Action<int, byte> Set;
-        private Func<int, byte> Get;
+        public Action<int, byte> Set;
+        public Func<int, byte> Get;
 
         public PortSpace(Func<int, byte> get, Action<int, byte> set)
         {
@@ -54,6 +54,8 @@ namespace zxemu
         private void InitIO()
         {
             portSpace = new PortSpace(PortIn, PortOut);
+            portSpace.Get = PortIn;
+            portSpace.Set = PortOut;
             cpu.PortsSpace = portSpace;
 
             keyMap = new Dictionary<Keys, int[]>();
@@ -99,7 +101,7 @@ namespace zxemu
             keyMap[Keys.B] = new int[] { 0x7ffe, 16 };
 
             keyState = new Dictionary<int, IntBuffer>();
-            keyState[0xfefe] = new IntBuffer(0x1f); // 0xbf
+            keyState[0xfefe] = new IntBuffer(0x1f); // 0xbf 0x1f
             keyState[0xfdfe] = new IntBuffer(0x1f);
             keyState[0xfbfe] = new IntBuffer(0x1f);
             keyState[0xf7fe] = new IntBuffer(0x1f);
@@ -107,25 +109,30 @@ namespace zxemu
             keyState[0xdffe] = new IntBuffer(0x1f);
             keyState[0xbffe] = new IntBuffer(0x1f);
             keyState[0x7ffe] = new IntBuffer(0x1f); //???
-            //keyState[0x00fe] = new IntBuffer(0x1f); //???
+            keyState[0x00fe] = new IntBuffer(0x1f); //???
         }
 
         private byte PortIn(int address)
         {
-            Console.WriteLine(address.ToString());
-
+            //Console.WriteLine(address.ToString());
+            
             if (keyState.ContainsKey(address))
             {
                 IntBuffer ks = keyState[address];
-                lock (ks) return (byte)ks.Value;
+                lock (ks)
+                {
+                    byte b =  (byte)ks.Value;
+                    //Console.WriteLine(b.ToString());
+                    return b;
+                }
             }
-
+            
             return 255;
         }
 
         private void PortOut(int address, byte value)
         {
-            Console.WriteLine("[PortOut]");
+            //Console.WriteLine("[PortOut]");
 
             if (address == 254)
             {
@@ -135,7 +142,7 @@ namespace zxemu
 
         public void KeyPress(Keys key, bool down)
         {
-            Console.WriteLine("Key:" + key + "\t" + down);
+            //Console.WriteLine("Key:" + key + "\t" + down);
 
             if (keyMap.ContainsKey(key))
             {

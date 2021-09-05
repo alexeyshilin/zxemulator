@@ -21,12 +21,14 @@ namespace zxemu
                     buffer.RemoveAt(0);
                     return i;
                 }
+                
+                //return 0x1f;
                 return previousValue;
             }
             set
             {
                 buffer.Add(value);
-                previousValue = value;
+                //previousValue = value;
             }
         }
 

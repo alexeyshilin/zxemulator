@@ -43,6 +43,7 @@ namespace zxemu
             keyStates.Remove(e.KeyCode);
             core.KeyPress(e.KeyCode, false);
             e.Handled = true;
+            Console.WriteLine("KeyUp keyStates.len={0}", keyStates.Count);
         }
 
         private void Cb_KeyDown(object sender, KeyEventArgs e)
@@ -51,6 +52,7 @@ namespace zxemu
 
             if (!keyStates.Contains(e.KeyCode))
             {
+                Console.WriteLine("KeyDown keyStates.len={0}", keyStates.Count);
                 keyStates.Add(e.KeyCode);
                 core.KeyPress(e.KeyCode, true);
             }
