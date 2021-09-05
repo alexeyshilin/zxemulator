@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -25,6 +25,7 @@ namespace zxemu
         private bool flashInvert = false;
         private bool irq = false;
         private static readonly Rectangle screenRect = new Rectangle(0, 0, 416, 312);
+        private Timer flashTimer;
 
 
         // IZ80InterruptSource
@@ -59,12 +60,26 @@ namespace zxemu
 
         private void AudioIn()
         {
+            flashTimer = new Timer
+            {
+                Interval = 500
+            };
+            flashTimer.Tick += FlashTimer_Tick;
+            flashTimer.Start();
+
             cpu.Memory = this;
 
             Array.Copy(File.ReadAllBytes("48k.rom"), ram, 16384);
             cpu.RegisterInterruptSource(this);
             //sampler.StartRecording();
             Task.Run(sampler.StartRecording);
+        }
+
+        private void FlashTimer_Tick(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+
+            flashInvert = !flashInvert;
         }
 
         private void Sampler_DataAvailable1(object sender, WaveInEventArgs e)
