@@ -67,7 +67,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Z80dotNet, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dll\Z80dotNet.dll</HintPath>
+      <HintPath>..\..\..\Z80dotNet\Main\bin\Release\Z80dotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +80,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InBuffer.cs" />
+    <Compile Include="PortSpace.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

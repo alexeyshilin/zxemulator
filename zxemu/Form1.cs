@@ -13,6 +13,7 @@ namespace zxemu
     public partial class Form1 : Form
     {
         Core core;
+        private readonly HashSet<Keys> keyStates;
         public Form1()
         {
             InitializeComponent();
@@ -24,6 +25,8 @@ namespace zxemu
 
             PB_Screen.Controls.Add(cb);
             PB_Screen.Click += Pb_Click;
+
+            keyStates = new HashSet<Keys>();
         }
 
         private void Pb_Click(object sender, EventArgs e)
@@ -37,12 +40,20 @@ namespace zxemu
         {
             //throw new NotImplementedException();
 
+            keyStates.Remove(e.KeyCode);
+            core.KeyPress(e.KeyCode, false);
             e.Handled = true;
         }
 
         private void Cb_KeyDown(object sender, KeyEventArgs e)
         {
             //throw new NotImplementedException();
+
+            if (!keyStates.Contains(e.KeyCode))
+            {
+                keyStates.Add(e.KeyCode);
+                core.KeyPress(e.KeyCode, true);
+            }
 
             e.Handled = true;
         }

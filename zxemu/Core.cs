@@ -63,6 +63,7 @@ namespace zxemu
             screen.Palette = pal;
             pb_screen.BackgroundImage = screen;
 
+            InitIO();
             AudioIn();
         }
 
