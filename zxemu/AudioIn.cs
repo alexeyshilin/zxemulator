@@ -79,7 +79,7 @@ namespace zxemu
 
             int lineStart = line * 416;
 
-            if (line < 64 || line > 256)
+            if (line < 64 || line >= 256)
             {
                 Fill(screenData, borderColor, lineStart, 416);
                 return;
