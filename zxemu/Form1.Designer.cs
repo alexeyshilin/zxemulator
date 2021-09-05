@@ -35,6 +35,7 @@ namespace zxemu
             // 
             // PB_Screen
             // 
+            this.PB_Screen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.PB_Screen.Location = new System.Drawing.Point(12, 12);
             this.PB_Screen.Name = "PB_Screen";
             this.PB_Screen.Size = new System.Drawing.Size(832, 624);
