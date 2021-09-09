@@ -50,6 +50,8 @@ namespace zxemu
         private PortSpace portSpace;
         private Dictionary<Keys, int[]> keyMap;
         private Dictionary<int, IntBuffer> keyState;
+        private int speaker = 0;
+        private readonly List<ulong> spkEvents = new List<ulong>();
 
         private void InitIO()
         {
@@ -137,6 +139,17 @@ namespace zxemu
             if (address == 254)
             {
                 borderColor = (byte)(value & 7);
+
+                int lastSpeaker = speaker;
+                speaker = (value & 0x18) >> 3;
+                if(speaker != lastSpeaker)
+                {
+                    ulong sstate = (cpu.TStatesElapsedSinceStart << 2) | (uint)speaker;
+                    lock (spkEvents)
+                    {
+                        spkEvents.Add(sstate);
+                    }
+                }
             }
         }
 

@@ -64,6 +64,7 @@ namespace zxemu
             pb_screen.BackgroundImage = screen;
 
             InitIO();
+            InitAudioOut();
             AudioIn();
         }
 
