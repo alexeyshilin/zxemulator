@@ -162,7 +162,7 @@ namespace zxemu
                     }
                     else
                     {
-                        lv |= ~bit & 0xff;
+                        lv |= bit & 0xff;
                     }
 
                     ks.Value = lv;

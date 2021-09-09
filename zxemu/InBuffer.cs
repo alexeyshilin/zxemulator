@@ -28,7 +28,7 @@ namespace zxemu
             set
             {
                 buffer.Add(value);
-                //previousValue = value;
+                previousValue = value;
             }
         }
 
