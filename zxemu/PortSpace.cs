@@ -52,6 +52,7 @@ namespace zxemu
         private Dictionary<int, IntBuffer> keyState;
         private int speaker = 0;
         private readonly List<ulong> spkEvents = new List<ulong>();
+        private bool audioInState = false;
 
         private void InitIO()
         {
@@ -111,7 +112,7 @@ namespace zxemu
             keyState[0xdffe] = new IntBuffer(0x1f);
             keyState[0xbffe] = new IntBuffer(0x1f);
             keyState[0x7ffe] = new IntBuffer(0x1f); //???
-            keyState[0x00fe] = new IntBuffer(0x1f); //???
+            //keyState[0x00fe] = new IntBuffer(0x1f); //???
         }
 
         private byte PortIn(int address)
@@ -127,6 +128,11 @@ namespace zxemu
                     //Console.WriteLine(b.ToString());
                     return b;
                 }
+            }else if(address == 0xfe)
+            {
+                return (byte)(audioInState ? 0xff : 0xbf);
+                //byte port = (byte)(audioInState ? 0xff : 0xbf);
+                //return port;
             }
             
             return 255;

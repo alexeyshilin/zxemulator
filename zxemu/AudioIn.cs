@@ -88,6 +88,8 @@ namespace zxemu
 
             for (int i = 0; i < e.BytesRecorded; i++)
             {
+                audioInState = e.Buffer[i] > 150;
+
                 float tCount = lastTCount;
 
                 while (tCount < speed)

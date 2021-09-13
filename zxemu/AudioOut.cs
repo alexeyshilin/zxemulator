@@ -19,12 +19,13 @@ namespace zxemu
         private ulong sampleCount = 0;
         private bool waitingForChange = false;
         private ulong sampleChange = 0;
-        private ulong soundLatency = 18500;
+        //private ulong soundLatency = 18500;
+        private ulong soundLatency = (ulong) baseFreq/5;
 
         //public override long Length => throw new NotImplementedException();
         public override long Length => long.MaxValue;
 
-        public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override long Position { get => position; set => throw new NotImplementedException(); }
 
         private void InitAudioOut()
         {
@@ -57,9 +58,9 @@ namespace zxemu
                 }
 
                 nextSpkValue = (byte)((next & 3) * 10);
+                next >>= 2;
                 //sampleChange = (ulong)((double)next / (double)speed);
                 sampleChange = (ulong)((double)next / (double)speed) + soundLatency;
-                next >>= 2;
                 waitingForChange = true;
             }
             else
