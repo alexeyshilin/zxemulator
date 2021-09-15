@@ -12,6 +12,9 @@ namespace zxemu
 
     public partial class Core
     {
+        private Core(Core_Video _)
+        {
 
+        }
     }
 }
