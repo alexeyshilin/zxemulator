@@ -9,12 +9,12 @@ using Konamiman.Z80dotNet;
 
 namespace zxemu
 {
-    public class PortSpace : IMemory
+    public class Core_IO : IMemory
     {
         public Action<int, byte> Set;
         public Func<int, byte> Get;
 
-        public PortSpace(Func<int, byte> get, Action<int, byte> set)
+        public Core_IO(Func<int, byte> get, Action<int, byte> set)
         {
             Get = get;
             Set = set;
@@ -47,7 +47,7 @@ namespace zxemu
 
     public partial class Core
     {
-        private PortSpace portSpace;
+        private Core_IO portSpace;
         private Dictionary<Keys, int[]> keyMap;
         private Dictionary<int, IntBuffer> keyState;
         private int speaker = 0;
@@ -56,7 +56,7 @@ namespace zxemu
 
         private void InitIO()
         {
-            portSpace = new PortSpace(PortIn, PortOut);
+            portSpace = new Core_IO(PortIn, PortOut);
             portSpace.Get = PortIn;
             portSpace.Set = PortOut;
             cpu.PortsSpace = portSpace;

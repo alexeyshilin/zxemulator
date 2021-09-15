@@ -74,6 +74,8 @@
     <Compile Include="AudioIn.cs" />
     <Compile Include="AudioOut.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Core_CPU.cs" />
+    <Compile Include="Core_Video.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,7 +83,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="InBuffer.cs" />
-    <Compile Include="PortSpace.cs" />
+    <Compile Include="Core_IO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
