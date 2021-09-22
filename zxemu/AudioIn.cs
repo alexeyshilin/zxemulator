@@ -24,11 +24,13 @@ namespace zxemu
 
         private Core(Core_AudioIn coreVideo) : this(new Core_AudioOut())
         {
+            /*
             sampler = new WaveIn()
             {
                 WaveFormat = new WaveFormat(baseFreq, 8, 1)
             };
             sampler.DataAvailable += Sampler_DataAvailable1;
+            */
 
             //create enumerator
             var enumerator1 = new MMDeviceEnumerator();
