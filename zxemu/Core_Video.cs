@@ -28,7 +28,10 @@ namespace zxemu
         private int lineCount = 0;
         private readonly byte[] screenData = new byte[312 * 416];
         private byte borderColor = 7;
+        private float lineFreq = 0;
+
         private bool flashInvert = false;
+
         private static readonly Rectangle screenRect = new Rectangle(0, 0, 416, 312);
         private Timer flashTimer;
         //
@@ -43,6 +46,7 @@ namespace zxemu
         //public Core(PictureBox pb)
         private Core(Core_Video coreVideo) : this(new Core_AudioIn())
         {
+
 
             lineFreq = (312f * 50f) / baseFreq;
             pb_screen = coreVideo.screen;
@@ -93,6 +97,9 @@ namespace zxemu
         {
             //throw new NotImplementedException();
 
+            byte[] ram = cpuRam;
+            //////////
+
             if (line < 8) return;
 
             int lineStart = line * 416;
@@ -135,6 +142,10 @@ namespace zxemu
         {
             //throw new NotImplementedException();
 
+            bool irq = cpuIrq;
+            ////////////////
+
+
             irq = true;
 
             byte[] clone = (byte[])screenData.Clone();
@@ -162,6 +173,45 @@ namespace zxemu
                 array[start++] = with;
             }
         }
+
+        //
+        private void Video_Show(byte[] clone)
+        {
+            BitmapData bmd = screen.LockBits(
+                    screenRect,
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format8bppIndexed);
+            Marshal.Copy(clone, 0, bmd.Scan0, clone.Length);
+            screen.UnlockBits(bmd);
+            pb_screen.Refresh();
+        }
+
+        private void Video_Scan()
+        {
+            lastLine += lineFreq;
+            if (lastLine >= 1)
+            {
+                DrawLine(lineCount++);
+                if (lineCount >= 312)
+                {
+                    lineCount = 0;
+                    CPU_Interrupt();
+                }
+                lastLine--;
+            }
+        }
+
+        private delegate void Video_Delegate(byte[] data);
+        private Video_Delegate videoShow;
+
+        private void Video_Display()
+        {
+            videoShow = Video_Show;
+
+            if (!pb_screen.IsDisposed)
+                pb_screen.Invoke(videoShow, screenData.Clone());
+        }
+        //
 
     }
 }

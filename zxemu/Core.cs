@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
@@ -13,6 +14,8 @@ namespace zxemu
 {
     public partial class Core
     {
+        private static readonly int baseFreq = 96000;
+
         public Core(PictureBox screen) : this(new Core_Video(screen))
         {
             //sampler.StartRecording();

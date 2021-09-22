@@ -24,6 +24,8 @@ namespace zxemu
         //private ulong soundLatency = 18500;
         private ulong soundLatency = (ulong) baseFreq/5;
 
+        private readonly List<ulong> spkEvents = new List<ulong>();
+
         //public override long Length => throw new NotImplementedException();
         public override long Length => long.MaxValue;
 
@@ -67,7 +69,7 @@ namespace zxemu
                 nextSpkValue = (byte)((next & 3) * 10);
                 next >>= 2;
                 //sampleChange = (ulong)((double)next / (double)speed);
-                sampleChange = (ulong)((double)next / (double)speed) + soundLatency;
+                sampleChange = (ulong)((double)next / (double)cpuSpeed) + soundLatency;
                 waitingForChange = true;
             }
             else

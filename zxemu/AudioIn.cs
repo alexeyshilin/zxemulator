@@ -20,6 +20,7 @@ namespace zxemu
     public partial class Core
     {
         private readonly WaveIn sampler;
+        private bool audioInState = false;
 
 
         private Core(Core_AudioIn coreVideo) : this(new Core_AudioOut())
@@ -81,6 +82,7 @@ namespace zxemu
             }
         }
 
+        /*
         public void SetContents(int startAddress, byte[] contents, int startIndex = 0, int? length = null)
         {
             throw new NotImplementedException();
@@ -90,5 +92,6 @@ namespace zxemu
         {
             throw new NotImplementedException();
         }
+        */
     }
 }
