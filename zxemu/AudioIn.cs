@@ -18,7 +18,7 @@ namespace zxemu
 
     public partial class Core
     {
-
+        private readonly WaveIn sampler;
 
 
         private Core(Core_AudioIn coreVideo) : this(new Core_AudioOut())
@@ -46,26 +46,7 @@ namespace zxemu
             {
                 audioInState = e.Buffer[i] > 150;
 
-                float tCount = lastTCount;
-
-                while (tCount < speed)
-                    tCount += cpu.ExecuteNextInstruction();
-
-                lastTCount = tCount - speed;
-                lastLine += lineFreq;
-
-                if (lastLine >= 1)
-                {
-                    DrawLine(lineCount++);
-
-                    if (lineCount >= 312)
-                    {
-                        lineCount = 0;
-                        FireInterrupt();
-                    }
-
-                    lastLine--;
-                }
+                CPU_Execute_Block();
             }
         }
 

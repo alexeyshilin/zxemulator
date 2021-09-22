@@ -30,28 +30,17 @@ namespace zxemu
         private int lineCount = 0;
         private readonly byte[] screenData = new byte[312 * 416];
         private byte borderColor = 7;
-        private readonly byte[] ram = new byte[65536];
         private bool flashInvert = false;
-        private bool irq = false;
         private static readonly Rectangle screenRect = new Rectangle(0, 0, 416, 312);
         private Timer flashTimer;
         //
 
-        private static readonly int baseFreq = 96000;
-        private static readonly int clockFreq = 3500000;
-        private readonly float speed;
-        float lineFreq;
 
         private static readonly int BRIGHT = 0xff, NORM = 0xd7;
 
         private PictureBox pb_screen;
         private Bitmap screen;
 
-        private readonly Z80Processor cpu = new Z80Processor();
-        //private readonly byte[] ram;
-        //private bool cpuIrq;
-
-        private readonly WaveIn sampler;
 
         //public Core(PictureBox pb)
         private Core(Core_Video coreVideo) : this(new Core_AudioIn())
