@@ -58,6 +58,8 @@ namespace zxemu
 
         private Core(Core_CPU _)
         {
+            speed = (float)clockFreq / (float)baseFreq;
+
             Array.Copy(File.ReadAllBytes("48k.rom"), ram, 16384);
             cpu.Memory = this;
             cpu.RegisterInterruptSource(this);
