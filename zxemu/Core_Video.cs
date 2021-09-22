@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 using Konamiman.Z80dotNet;
 using NAudio.CoreAudioApi;
@@ -23,6 +24,19 @@ namespace zxemu
 
     public partial class Core
     {
+        //
+        private float lastTCount = 0;
+        private float lastLine = 0;
+        private int lineCount = 0;
+        private readonly byte[] screenData = new byte[312 * 416];
+        private byte borderColor = 7;
+        private readonly byte[] ram = new byte[65536];
+        private bool flashInvert = false;
+        private bool irq = false;
+        private static readonly Rectangle screenRect = new Rectangle(0, 0, 416, 312);
+        private Timer flashTimer;
+        //
+
         private static readonly int baseFreq = 96000;
         private static readonly int clockFreq = 3500000;
         private readonly float speed;
@@ -98,9 +112,100 @@ namespace zxemu
             screen.Palette = pal;
             pb_screen.BackgroundImage = screen;
 
+            //
+            flashTimer = new Timer
+            {
+                Interval = 500
+            };
+            flashTimer.Tick += FlashTimer_Tick;
+            flashTimer.Start();
+            //
+
             InitIO();
             InitAudioOut();
             AudioIn();
         }
+
+        private void FlashTimer_Tick(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+
+            flashInvert = !flashInvert;
+        }
+
+        private void DrawLine(int line)
+        {
+            //throw new NotImplementedException();
+
+            if (line < 8) return;
+
+            int lineStart = line * 416;
+
+            if (line < 64 || line >= 256)
+            {
+                Fill(screenData, borderColor, lineStart, 416);
+                return;
+            }
+
+            Fill(screenData, borderColor, lineStart, 80); // left border
+            Fill(screenData, borderColor, lineStart + 336, 80); // right border
+
+            lineStart += 80;
+            line -= 64;
+
+            int charY = 0x5800 + ((line >> 3) << 5);
+            int lineAddr = ((line & 0x07) << 8) | ((line & 0x38) << 2) | ((line & 0xC0) << 5) | 0x4000;
+            for (int charX = 0; charX < 32; charX++)
+            {
+                byte att = ram[charX + charY];
+                int ink = att & 0x07;
+                //ink = 0x01; // red
+                int paper = (att & 0x38) >> 3;
+                if ((att & 0x40) != 0) { ink += 8; paper += 8; }
+                bool flash = (att & 0x80) != 0;
+                bool doFlash = flash && flashInvert;
+                byte byt = ram[lineAddr++];
+                for (int bit = 128; bit > 0; bit >>= 1)
+                {
+                    if (doFlash)
+                        screenData[lineStart++] = (byte)((byt & bit) != 0 ? paper : ink);
+                    else
+                        screenData[lineStart++] = (byte)((byt & bit) != 0 ? ink : paper);
+                }
+            }
+        }
+
+        private void FireInterrupt()
+        {
+            //throw new NotImplementedException();
+
+            irq = true;
+
+            byte[] clone = (byte[])screenData.Clone();
+            if (!pb_screen.IsDisposed)
+            {
+                pb_screen.Invoke((System.Windows.Forms.MethodInvoker)delegate () {
+                    BitmapData bmd = screen.LockBits(
+                        screenRect,
+                        ImageLockMode.WriteOnly,
+                        PixelFormat.Format8bppIndexed
+                        );
+                    Marshal.Copy(clone, 0, bmd.Scan0, clone.Length);
+                    screen.UnlockBits(bmd);
+                    pb_screen.Refresh();
+                });
+            }
+        }
+
+        private static void Fill(byte[] array, byte with, int start, int len)
+        {
+            int end = start + len;
+
+            while (start < end)
+            {
+                array[start++] = with;
+            }
+        }
+
     }
 }
