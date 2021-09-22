@@ -14,6 +14,8 @@ using Konamiman.Z80dotNet;
 
 namespace zxemu
 {
+    class Core_AudioIn { }
+
     public partial class Core : IMemory, IZ80InterruptSource
     {
         private float lastTCount = 0;
@@ -27,6 +29,11 @@ namespace zxemu
         private static readonly Rectangle screenRect = new Rectangle(0, 0, 416, 312);
         private Timer flashTimer;
 
+
+        private Core(Core_AudioIn coreVideo) : this(new Core_AudioOut())
+        {
+
+        }
 
         // IZ80InterruptSource
         public event EventHandler NmiInterruptPulse;

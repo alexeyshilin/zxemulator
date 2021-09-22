@@ -14,11 +14,13 @@ namespace zxemu
         public Action<int, byte> Set;
         public Func<int, byte> Get;
 
+        /*
         public Core_IO(Func<int, byte> get, Action<int, byte> set)
         {
             Get = get;
             Set = set;
         }
+        */
 
         // IMemory
         public byte this[int address]
@@ -54,12 +56,19 @@ namespace zxemu
         private readonly List<ulong> spkEvents = new List<ulong>();
         private bool audioInState = false;
 
-        private void InitIO()
+        private Core(Core_IO portSpace) : this(new Core_CPU())
         {
-            portSpace = new Core_IO(PortIn, PortOut);
             portSpace.Get = PortIn;
             portSpace.Set = PortOut;
             cpu.PortsSpace = portSpace;
+        }
+
+        private void InitIO()
+        {
+            //portSpace = new Core_IO(PortIn, PortOut);
+            //portSpace.Get = PortIn;
+            //portSpace.Set = PortOut;
+            //cpu.PortsSpace = portSpace;
 
             keyMap = new Dictionary<Keys, int[]>();
             keyMap[Keys.ShiftKey] = new int[] { 0xfefe, 1 };

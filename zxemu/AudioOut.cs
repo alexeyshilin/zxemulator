@@ -8,6 +8,8 @@ using NAudio.Wave;
 
 namespace zxemu
 {
+    class Core_AudioOut { }
+
     public partial class Core : WaveStream
     {
         private readonly WaveFormat waveFormat = new WaveFormat(baseFreq, 8, 1);
@@ -26,6 +28,11 @@ namespace zxemu
         public override long Length => long.MaxValue;
 
         public override long Position { get => position; set => throw new NotImplementedException(); }
+
+        private Core(Core_AudioOut coreVideo) : this(new Core_IO())
+        {
+
+        }
 
         private void InitAudioOut()
         {
