@@ -31,11 +31,6 @@ namespace zxemu
 
         private Core(Core_AudioOut coreVideo) : this(new Core_IO())
         {
-
-        }
-
-        private void InitAudioOut()
-        {
             //WaveOutEvent waveOut = new WaveOutEvent();
             //waveOut.DesiredLatency = 75;
 
@@ -46,6 +41,11 @@ namespace zxemu
 
             waveOut.Init(this);
             Task.Run(waveOut.Play);
+        }
+
+        private void InitAudioOut()
+        {
+
         }
 
         private void SpeakerChanger()

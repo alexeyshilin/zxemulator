@@ -110,9 +110,9 @@ namespace zxemu
             flashTimer.Start();
             //
 
-            InitIO();
-            InitAudioOut();
-            AudioIn();
+            //InitIO();
+            //InitAudioOut();
+            //AudioIn();
         }
 
         private void FlashTimer_Tick(object sender, EventArgs e)

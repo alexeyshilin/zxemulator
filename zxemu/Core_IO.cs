@@ -32,7 +32,7 @@ namespace zxemu
             set => Set(address, value);
         }
 
-        public int Size => throw new NotImplementedException();
+        public int Size => 65536;
 
         public byte[] GetContents(int startAddress, int length)
         {
@@ -61,14 +61,6 @@ namespace zxemu
             portSpace.Get = PortIn;
             portSpace.Set = PortOut;
             cpu.PortsSpace = portSpace;
-        }
-
-        private void InitIO()
-        {
-            //portSpace = new Core_IO(PortIn, PortOut);
-            //portSpace.Get = PortIn;
-            //portSpace.Set = PortOut;
-            //cpu.PortsSpace = portSpace;
 
             keyMap = new Dictionary<Keys, int[]>();
             keyMap[Keys.ShiftKey] = new int[] { 0xfefe, 1 };
@@ -112,16 +104,28 @@ namespace zxemu
             keyMap[Keys.N] = new int[] { 0x7ffe, 8 };
             keyMap[Keys.B] = new int[] { 0x7ffe, 16 };
 
+            IntBuffer lastRow = new IntBuffer(0xbf);
+
             keyState = new Dictionary<int, IntBuffer>();
-            keyState[0xfefe] = new IntBuffer(0x1f); // 0xbf 0x1f
-            keyState[0xfdfe] = new IntBuffer(0x1f);
-            keyState[0xfbfe] = new IntBuffer(0x1f);
-            keyState[0xf7fe] = new IntBuffer(0x1f);
-            keyState[0xeffe] = new IntBuffer(0x1f);
-            keyState[0xdffe] = new IntBuffer(0x1f);
-            keyState[0xbffe] = new IntBuffer(0x1f);
-            keyState[0x7ffe] = new IntBuffer(0x1f); //???
-            //keyState[0x00fe] = new IntBuffer(0x1f); //???
+            keyState[0xfefe] = new IntBuffer(0xbf); // 0xbf 0x1f
+            keyState[0xfdfe] = new IntBuffer(0xbf);
+            keyState[0xfbfe] = new IntBuffer(0xbf);
+            keyState[0xf7fe] = new IntBuffer(0xbf);
+            keyState[0xeffe] = new IntBuffer(0xbf);
+            keyState[0xdffe] = new IntBuffer(0xbf);
+            keyState[0xbffe] = new IntBuffer(0xbf);
+            keyState[0x7ffe] = lastRow; //???
+            keyState[0x00fe] = lastRow; //???
+        }
+
+        private void InitIO()
+        {
+            //portSpace = new Core_IO(PortIn, PortOut);
+            //portSpace.Get = PortIn;
+            //portSpace.Set = PortOut;
+            //cpu.PortsSpace = portSpace;
+
+
         }
 
         private byte PortIn(int address)
